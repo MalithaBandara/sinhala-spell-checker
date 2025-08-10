@@ -25,46 +25,54 @@ def build():
             pos = pos.children[mp[letter]]
         pos.wordEnd = True
 
-def search(word,x,pos,ind,curr_word,results,visited):
+def search(word,x,pos,ind,curr_word,results,visited,ln):
     if curr_word in visited and ind in visited[curr_word] and visited[curr_word][ind] >= x:
         return
     if curr_word not in visited:
         visited[curr_word] = {}
     visited[curr_word][ind] = x
     y = x
+    z = 0
     for ch in word[ind:]:
         if mp[ch] > 60 or mp[ch] < 2:
             y -= dist2
         else:
             y -= dist3
     if pos.wordEnd and y >= 0:
-        results.append([max_dist-y,abs(len(word)-len(curr_word)),curr_word])
+        for c in curr_word:
+            if mp[c] <= 60 and mp[c] >= 2:
+                z += 1
+        results.append([max_dist-y,abs(ln-z),curr_word])
     if x < 0 or ind == len(word):
         return
     for c in mp:
         if pos.children[mp[c]] != None:
             if c == word[ind]:
-                search(word,x,pos.children[mp[c]],ind+1,curr_word+c,results,visited)
+                search(word,x,pos.children[mp[c]],ind+1,curr_word+c,results,visited,ln)
             else:
                 if mp[c] > 61 or mp[c] < 2:
                     if abs(mp[c] - mp[word[ind]]) == 1:
-                        search(word,x-dist1,pos.children[mp[c]],ind+1,curr_word+c,results,visited)
-                        search(word,x-dist1,pos.children[mp[c]],ind,curr_word+c,results,visited)
+                        search(word,x-dist1,pos.children[mp[c]],ind+1,curr_word+c,results,visited,ln)
+                        search(word,x-dist1,pos.children[mp[c]],ind,curr_word+c,results,visited,ln)
                     else:
-                        search(word,x-dist2,pos.children[mp[c]],ind+1,curr_word+c,results,visited)
-                        search(word,x-dist2,pos.children[mp[c]],ind,curr_word+c,results,visited)
+                        search(word,x-dist2,pos.children[mp[c]],ind+1,curr_word+c,results,visited,ln)
+                        search(word,x-dist2,pos.children[mp[c]],ind,curr_word+c,results,visited,ln)
                 else:
                     if abs(mp[c] - mp[word[ind]]) == 1:
-                        search(word,x-dist2,pos.children[mp[c]],ind+1,curr_word+c,results,visited)
-                        search(word,x-dist2,pos.children[mp[c]],ind,curr_word+c,results,visited)
+                        search(word,x-dist2,pos.children[mp[c]],ind+1,curr_word+c,results,visited,ln)
+                        search(word,x-dist2,pos.children[mp[c]],ind,curr_word+c,results,visited,ln)
                     else:
-                        search(word,x-dist3,pos.children[mp[c]],ind+1,curr_word+c,results,visited)
-                        search(word,x-dist3,pos.children[mp[c]],ind,curr_word+c,results,visited)
+                        search(word,x-dist3,pos.children[mp[c]],ind+1,curr_word+c,results,visited,ln)
+                        search(word,x-dist3,pos.children[mp[c]],ind,curr_word+c,results,visited,ln)
 
 def calc(word):
     results = []
     visited = {}
-    search(word,max_dist,root,0,"",results,visited)
+    ln = 0
+    for c in word:
+        if mp[c] <= 60 and mp[c] >= 2:
+            ln += 1
+    search(word,max_dist,root,0,"",results,visited,ln)
     res = sorted(results)
     while len(res) > word_count:
         res.pop()
