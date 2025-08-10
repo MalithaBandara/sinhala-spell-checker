@@ -14,10 +14,12 @@ Priority for letter modifications is given in the following order:
 
 # Input
 Input should be given as a text file with `UTF-16` encoding
+<br>
 ![input-text](img/input_txt.png)
 
 # Output
 This program will provide a text file with the automatically corrected output and a JSON file with the word suggestions for each misspelled word
+<br>
 ![output-text](img/output_txt.png)
 ![output-json](img/output_json.png)
 
