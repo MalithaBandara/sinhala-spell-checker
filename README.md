@@ -21,6 +21,7 @@ Input should be given as a text file with `UTF-16` encoding
 This program will provide a text file with the automatically corrected output and a JSON file with the word suggestions for each misspelled word
 <br>
 ![output-text](img/output_txt.png)
+<br>
 ![output-json](img/output_json.png)
 
 # Usage
